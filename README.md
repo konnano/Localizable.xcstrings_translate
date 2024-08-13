@@ -6,6 +6,8 @@ Localizable.xcstrings を翻訳するPerlスクリプトです
 
 `brew install translate-shell`
 
+このフォルダーに Localizable.xcstrings を置いて下さい
+
 ターミナルで、このフォルダーに入って、以下を実行して下さい
 
 `perl trance.pl 1`
