@@ -14,6 +14,8 @@ Localizable.xcstrings を翻訳するPerlスクリプトです
 
 翻訳が終了すると trans.txt に対象文字列が入ってます
 
+機械翻訳を修正して
+
 `perl trance.pl`
 
 で表示されますので、リダイレクトして下さい
