@@ -22,8 +22,8 @@ if( $ARGV[0] ){ unlink 'trans.txt';
  close $K;
  open my $G,'>','tran.txt' or die" Line 2 $!\n";
   print $G $lang; close $G;
- system qq(while read line;do set -- \$line;echo "\${*:2}"|
-           trans -b "\$1":$Lang >> trans.txt;done <tran.txt);
+ system qq(while read -r line;do set -- \$line;echo "\${*:2}"|
+           trans -b "\$1":$Lang >> trans.txt;done < tran.txt);
 }else{
  open my $M,'<','trans.txt' or die" Line 3 $!\n";
   chomp(my @bn = <$M>); close $M;
