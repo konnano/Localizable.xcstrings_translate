@@ -45,9 +45,7 @@ if( $ARGV[0] ){ unlink 'trans.txt';
      $data =~ s/\\"/'/g; my $kai = () = $data =~ /\\n/g;
     if( $data =~ s/(^\s*"value"\s+:\s+").*?(\\n|")/$1$bn[$m++]$2/ ){
         $data =~ s/ttps:/https:/; $line = $data }
-    if( $data =~ s/(^\s*"value"\s+:.*?\\n).*?\\n/$1$bn[$m++]\\n/ ){
-        $data =~ s/ttps:/https:/; $line = $data }
-    for(my $k=2;$kai>$k;$k++ ){ 
+    for(my $k=1;$kai>$k;$k++ ){ 
      if( $data =~ s/(^\s*"value"\s+:(?:.*?\\n){$k}).*?\\n/$1$bn[$m++]\\n/ ){
          $data =~ s/ttps:/https:/; $line = $data }
     }
@@ -60,5 +58,6 @@ if( $ARGV[0] ){ unlink 'trans.txt';
   }
  }
  close $H;
+die " Translate Error\n" if $bn[$m];
 print @cn;
 }
