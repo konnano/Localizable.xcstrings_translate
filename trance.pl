@@ -14,16 +14,16 @@ if( $ARGV[0] ){ unlink 'trans.txt';
    }elsif( $data =~ /^\s*"value"\s+:\s+"(.*?)"/ ){
     if( $1 ){
      push @lang,split '\\\\n',$1;
-      for( @lang ){ s/https:/ttps:/; $lang .= "$code,$_\n" }
-    }else{ $lang .= "$code,\n" }
+      for( @lang ){ s/https:/ttps:/; $lang .= "$code $_\n" }
+    }else{ $lang .= "$code \n" }
    }elsif( $data =~ /^$sp}/ ){ $i1 = $e1 = 0 }
   }
  }
  close $K;
  open my $G,'>','tran.txt' or die" Line 2 $!\n";
   print $G $lang; close $G;
- system qq(cat tran.txt|while read tr;do IFS=, read co mo <<< "\$tr"
-            echo "\$mo"|trans -b "\$co":$Lang >> trans.txt;done);
+ system qq(while read line;do set -- \$line;echo "\${*:2}"|
+           trans -b "\$1":$Lang >> trans.txt;done <tran.txt);
 }else{
  open my $M,'<','trans.txt' or die" Line 3 $!\n";
   chomp(my @bn = <$M>); close $M;
