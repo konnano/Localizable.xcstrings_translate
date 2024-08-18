@@ -9,8 +9,8 @@ if( $ARGV[0] ){ unlink 'trans.txt';
  while(my $data = <$K>){ my @lang;
   if( index($data,'localizations') > 0 ){ $i1++ ; next }
   if( $i1 ){ $data =~ s/\\"/'/g;
-   if( not $e1 and $data =~ /^\s*"([^"]+)".+/ ){
-     $code = $1; ( $sp ) = $data =~ /(^[^"]+)"/; $e1 = 1;
+   if( not $e1 and $data =~ /(^\s*)"([^"]+)".+/ ){
+    $sp = $1; $code = $2; $e1 = 1;
    }elsif( $data =~ /^\s*"value"\s+:\s+"(.*?)"/ ){
     if( $1 ){
      push @lang,split '\\\\n',$1;
@@ -33,9 +33,9 @@ if( $ARGV[0] ){ unlink 'trans.txt';
  while(my $data = <$H>){ push @cn,$data;
   if( index($data,'localizations') > 0 ){ $i1++ ; next }
   if( $i1 ){
-   if( not $e1 and $data =~ s/(^\s*")[^"]+(".+\n)/$1$Lang$2/ ){
-    ( $sp ) = $data =~ /(^[^"]+)"/;
-     push @an,$data; $e1++; next;
+   if( not $e1 and $data =~ s/(^\s*)"[^"]+"(.+\n)/$1"$Lang"$2/ ){
+    $sp = $1; push @an,$data;
+     $e1++; next;
    }elsif( $data =~ /^$sp}/ ){
     if( index($cn[-1],',') < 0 ){ substr $cn[-1],-1,1,",\n" }
      push @an,$data; $i1 = $e1 = 0;
@@ -51,13 +51,14 @@ if( $ARGV[0] ){ unlink 'trans.txt';
     }
     if( $data =~ s/(^\s*"value"\s+:.+)\\n[^"]+"\n/$1\\n$bn[$m++]"\n/ ){
         $data =~ s/ttps:/https:/; $line = $data }
-    push @an,$line;
-    next;
+    die " Translate Error 1\n" unless $bn[$m];
+     push @an,$line;
+      next;
    }
    push @an,$data;
   }
  }
  close $H;
-die " Translate Error\n" if $bn[$m];
+die " Translate Error 2\n" if $bn[$m];
 print @cn;
 }
