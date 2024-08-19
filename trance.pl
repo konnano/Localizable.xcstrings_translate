@@ -22,8 +22,9 @@ if( $ARGV[0] ){ unlink 'trans.txt';
  close $K;
  open my $G,'>','tran.txt' or die" Line 2 $!\n";
   print $G $lang; close $G;
- system qq(while read -r line;do set -- \$line;echo "\${*:2}"|
-           trans -b "\$1":$Lang >> trans.txt;done < tran.txt);
+ system qq(trap 'rm tran.txt exit 1' 1 2 3 15
+           while read -r la line;do echo "\$line"|
+           trans -b "\$la":$Lang >> trans.txt;done < tran.txt);
 }else{
  open my $M,'<','trans.txt' or die" Line 3 $!\n";
   chomp(my @bn = <$M>); close $M;
@@ -51,7 +52,6 @@ if( $ARGV[0] ){ unlink 'trans.txt';
     }
     if( $data =~ s/(^\s*"value"\s+:.+)\\n[^"]+"\n/$1\\n$bn[$m++]"\n/ ){
         $data =~ s/ttps:/https:/; $line = $data }
-    die " Translate Error 1\n" unless $bn[$m];
      push @an,$line;
       next;
    }
@@ -59,6 +59,6 @@ if( $ARGV[0] ){ unlink 'trans.txt';
   }
  }
  close $H;
-die " Translate Error 2\n" if $bn[$m];
+die " Translate Error\n" if $bn[$m];
 print @cn;
 }
